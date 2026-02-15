@@ -142,6 +142,10 @@ public final class Constants {
 
   }
 
-  // random note
- // brogan is kinda weird
+
+  public final static class VisionConstants {
+  
+    public static final double VISION_TURN_kP = .1;
+  }
+
 }

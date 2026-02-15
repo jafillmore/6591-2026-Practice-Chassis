@@ -29,6 +29,7 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.commands.Autos;
 import frc.robot.subsystems.BallSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.VisionSubsystem;
 
 /*
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -47,7 +48,7 @@ public class RobotContainer {
     // The robot's subsystems
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
   private final BallSubsystem m_ball = new BallSubsystem();
-  
+  private final VisionSubsystem m_vision = new VisionSubsystem();
 
   // The driver's controllers
   Joystick m_leftJoystick = new Joystick(OIConstants.kLeftControllerPort);
@@ -74,9 +75,6 @@ public class RobotContainer {
 
 
 
-    camera1 = CameraServer.startAutomaticCapture(0);
-    
-    server = CameraServer.getServer();
     
     // Run configuration options for Pigeon 2 navigation module
     m_robotDrive.pidgeyConfig();
@@ -188,7 +186,9 @@ public class RobotContainer {
         if (ally.get() == Alliance.Blue) { alli="Blue";}
     }
   
-    SmartDashboard.putString(   "Alliance", alli);
+     SmartDashboard.putString(   "Alliance", alli);
+     SmartDashboard.putBoolean("Target Visible", m_vision.targetVisible);
+     SmartDashboard.putNumber("Target yaw", m_vision.targetYaw);
         
     
     
