@@ -37,7 +37,18 @@ public class VisionSubsystem extends SubsystemBase {
 
 
 
-    // Read in relevant data from the Camera
+
+   
+  }
+
+
+ 
+
+  @Override
+  public void periodic() {
+    // This method will be called once per scheduler run
+
+        // Read in relevant data from the Camera
     targetVisible = false;
     targetYaw = 0.0;
     var results = camera.getAllUnreadResults();
@@ -48,7 +59,7 @@ public class VisionSubsystem extends SubsystemBase {
         if (result.hasTargets()) {
           // At least one AprilTag was seen by the camera
           for (var target : result.getTargets()) {
-          if (target.getFiducialId() == 7) {
+          if (target.getFiducialId() == 10) {
           // Found Tag 7, record its information
             targetYaw = target.getYaw();
             targetVisible = true;
@@ -58,28 +69,18 @@ public class VisionSubsystem extends SubsystemBase {
       }
     }
 
-
-
-
-   
-  }
-
-
-
- 
-
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-
-      
-
-
-
-
-
+    SmartDashboard.putBoolean("Target Visible from subsys", targetVisible);
+    SmartDashboard.putNumber("Target yaw from subsys",targetYaw);
+    SmartDashboard.putNumber("Target yaw", getTargetYaw());
+    
     
   }
+
+  public double getTargetYaw() {
+    return targetYaw;
+  }
+
+
 
    
 }

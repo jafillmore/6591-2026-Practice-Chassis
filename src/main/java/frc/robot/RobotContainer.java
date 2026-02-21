@@ -6,12 +6,9 @@ package frc.robot;
 
 import java.util.Optional;
 
-import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.cscore.UsbCamera;
-import edu.wpi.first.cscore.VideoSink;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance; 
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.EventImportance;
@@ -42,9 +39,6 @@ public class RobotContainer {
     Optional<Alliance> ally = DriverStation.getAlliance();
     private String alli = "None! (WTF?)";
 
-    UsbCamera camera1;
-    VideoSink server;
-  
     // The robot's subsystems
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
   private final BallSubsystem m_ball = new BallSubsystem();
@@ -185,12 +179,12 @@ public class RobotContainer {
         if (ally.get() == Alliance.Red) { alli="Red";}
         if (ally.get() == Alliance.Blue) { alli="Blue";}
     }
-  
+       //double targetYawValue = m_vision.getTargetYaw();
      SmartDashboard.putString(   "Alliance", alli);
      SmartDashboard.putBoolean("Target Visible", m_vision.targetVisible);
-     SmartDashboard.putNumber("Target yaw", m_vision.targetYaw);
+     //SmartDashboard.putNumber("Target yaw", m_vision.getTargetYaw());
         
-    
+
     
     // Put the chooser on the dashboard
     Shuffleboard.getTab("Autonomous").add(m_chooser);
