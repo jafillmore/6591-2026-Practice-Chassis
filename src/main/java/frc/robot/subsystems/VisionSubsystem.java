@@ -36,7 +36,7 @@ public class VisionSubsystem extends SubsystemBase {
     camera = new PhotonCamera("Pantherpi-Cam1");
 
 
-
+    /*
     // Read in relevant data from the Camera
     targetVisible = false;
     targetYaw = 0.0;
@@ -57,7 +57,7 @@ public class VisionSubsystem extends SubsystemBase {
         }
       }
     }
-
+    */
 
 
 
@@ -71,6 +71,27 @@ public class VisionSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+
+        // Read in relevant data from the Camera
+    targetVisible = false;
+    targetYaw = 0.0;
+    var results = camera.getAllUnreadResults();
+    if (!results.isEmpty()) {
+      // Camera processed a new frame since last
+      // Get the last one in the list.
+        var result = results.get(results.size() - 1);
+        if (result.hasTargets()) {
+          // At least one AprilTag was seen by the camera
+          for (var target : result.getTargets()) {
+          if (target.getFiducialId() == 7) {
+          // Found Tag 7, record its information
+            targetYaw = target.getYaw();
+            targetVisible = true;
+           
+          }
+        }
+      }
+    }
 
       
 
