@@ -78,7 +78,7 @@ public class VisionSubsystem extends SubsystemBase {
 
     SmartDashboard.putBoolean("Target Visible from subsys", targetVisible);
     SmartDashboard.putNumber("Target yaw from subsys",targetYaw);
-    SmartDashboard.putNumber("Target yaw", getTargetYaw());
+
     
     
   }

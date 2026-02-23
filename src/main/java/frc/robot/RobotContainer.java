@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import java.lang.annotation.Target;
 import java.util.Optional;
 
 import edu.wpi.first.math.MathUtil;
@@ -61,21 +62,13 @@ public class RobotContainer {
     private final Command m_blueAuto2 = Autos.blueAuto2(m_robotDrive);
     private final Command m_blueAuto3 = Autos.blueAuto3(m_robotDrive);
 
-  // Setup for alignment to April Tag
-
-    public double twistPower;
 
  
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    
-    if (m_leftJoystick.trigger(null) != null) {
-            twistPower=m_vision.getTargetYaw()*VisionConstants.VISION_TURN_kP;}
-    else {twistPower=m_rightJoystick.getZ();};
-        
-
+  
 
     
     // Run configuration options for Pigeon 2 navigation module
@@ -110,7 +103,7 @@ public class RobotContainer {
             () -> m_robotDrive.drive(
                 -MathUtil.applyDeadband(m_leftJoystick.getY(), OIConstants.kDriveDeadband),
                 -MathUtil.applyDeadband(m_leftJoystick.getX(), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(twistPower, OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_rightJoystick.getZ(), OIConstants.kDriveDeadband),
                 DriveConstants.driveFieldRelative),
             m_robotDrive)); 
   }
@@ -168,6 +161,15 @@ public class RobotContainer {
         m_ball));
 
 
+    new JoystickButton(m_leftJoystick, OIConstants.kalignToTargetButton)
+        .whileTrue(new RunCommand(() -> m_robotDrive.drive(
+                -MathUtil.applyDeadband(m_leftJoystick.getY(), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_leftJoystick.getX(), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband((m_vision.targetYaw)*VisionConstants.VISION_TURN_kP, OIConstants.kDriveDeadband),
+                DriveConstants.driveFieldRelative),
+            m_robotDrive)); 
+  
+      
 
 
 
@@ -187,10 +189,11 @@ public class RobotContainer {
         if (ally.get() == Alliance.Red) { alli="Red";}
         if (ally.get() == Alliance.Blue) { alli="Blue";}
     }
-       //double targetYawValue = m_vision.getTargetYaw();
-     SmartDashboard.putString(   "Alliance", alli);
-     SmartDashboard.putBoolean("Target Visible", m_vision.targetVisible);
-     //SmartDashboard.putNumber("Target yaw", m_vision.getTargetYaw());
+    double targetYawValue = m_vision.getTargetYaw();
+    SmartDashboard.putString(   "Alliance", alli);
+    SmartDashboard.putBoolean("Target Visible", m_vision.targetVisible);
+    // Read the current yaw directly from the VisionSubsystem so it updates over time
+    SmartDashboard.putNumber("Target yaw", targetYawValue);
         
 
     
