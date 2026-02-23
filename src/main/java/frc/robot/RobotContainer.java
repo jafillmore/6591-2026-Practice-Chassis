@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.BallConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
+import frc.robot.Constants.VisionConstants;
 import frc.robot.commands.Autos;
 import frc.robot.subsystems.BallSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -60,13 +61,20 @@ public class RobotContainer {
     private final Command m_blueAuto2 = Autos.blueAuto2(m_robotDrive);
     private final Command m_blueAuto3 = Autos.blueAuto3(m_robotDrive);
 
+  // Setup for alignment to April Tag
+
+    public double twistPower;
+
  
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
     
-
+    if (m_leftJoystick.trigger(null) != null) {
+            twistPower=m_vision.getTargetYaw()*VisionConstants.VISION_TURN_kP;}
+    else {twistPower=m_rightJoystick.getZ();};
+        
 
 
     
@@ -102,7 +110,7 @@ public class RobotContainer {
             () -> m_robotDrive.drive(
                 -MathUtil.applyDeadband(m_leftJoystick.getY(), OIConstants.kDriveDeadband),
                 -MathUtil.applyDeadband(m_leftJoystick.getX(), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(m_rightJoystick.getZ(), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(twistPower, OIConstants.kDriveDeadband),
                 DriveConstants.driveFieldRelative),
             m_robotDrive)); 
   }
